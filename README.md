@@ -1,10 +1,10 @@
 # koa2-rest-cli
 
-![Build Status](https://travis-ci.org/lenconda/koa2-cli.svg?branch=master)
+![Build Status](https://travis-ci.org/lenconda/koa2-rest-cli.svg?branch=master)
 
 [Koa](https://www.npmjs.com/package/koa) application generator.
 
-Generating a RESTFul Koa2 template with `koa2-cli`. 
+Generating a RESTFul Koa2 template with `koa2-rest-cli`. 
 
 Inspired by [koa-generator](https://github.com/17koa/koa-generator).
 
@@ -48,7 +48,7 @@ Options:
 ## Quick Start
 
 
-To get started in the quickest way, after you installed this package, the system will auto link script `koa2-restful-generator` to a directory that in your system's `$PATH`. Thus you can simply run the command as shown below:
+To get started in the quickest way, after you installed this package, the system will auto link script `koa2-init` to a directory that in your system's `$PATH`. Thus you can simply run the command as shown below:
 
 ### Create the App
 

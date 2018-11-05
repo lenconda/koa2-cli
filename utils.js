@@ -97,7 +97,6 @@ module.exports = {
   loadFile,
   writeToFile,
   isEmptyDir,
-  isCmd,
   mkPrompt,
   finished
 }
