@@ -1,6 +1,6 @@
 # koa2-cli
 
-[![Build Status](https://travis-ci.org/lenconda/koa2-cli.svg?branch=master)
+[![Build Status](https://travis-ci.org/lenconda/koa2-cli.svg?branch=master)]
 
 http://koajs.com/
 
