@@ -1,8 +1,6 @@
-# koa2-cli
+# koa2-rest-cli
 
 ![Build Status](https://travis-ci.org/lenconda/koa2-cli.svg?branch=master)
-
-http://koajs.com/
 
 [Koa](https://www.npmjs.com/package/koa) application generator.
 
@@ -25,22 +23,26 @@ Inspired by [koa-generator](https://github.com/17koa/koa-generator).
 
 ## Installation
 
-```sh
-$ npm install -g koa2-cli
+```bash
+$ npm install -g koa2-rest-cli
 ```
 
 with 1 command
 
-- koa2-restful-generator (Support koa 2.x)
+- koa2-init (Support koa 2.x ONLY)
 
 ## Command Line Options
 
 This generator can also be further configured with the following command line flags.
 
 ```bash
-    -h, --help          output usage information
-    -V, --version       output the version number
-    -f, --force         force on non-empty directory
+Usage: koa2-init [options] [project_name(dir)]
+
+Options:
+  -V, --version  output the version number
+  -f, --force    force generate in an empty directory
+  -V, --version  show current version
+  -h, --help     output usage information
 ```
 
 ## Quick Start
@@ -51,7 +53,7 @@ To get started in the quickest way, after you installed this package, the system
 ### Create the App
 
 ```bash
-$ koa2-cli test && cd ./test
+$ koa2-init test
 ```
 
 then the process will **auto execute** `npm install` command in your project directory.

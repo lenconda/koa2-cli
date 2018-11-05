@@ -1,13 +1,13 @@
 {
-  "name": "koa2-cli",
-  "version": "0.1.6",
+  "name": "koa2-rest-cli",
+  "version": "0.1.10",
   "description": "A RESTFul API generator for Koa2",
   "main": "bin/koa2-cli",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "bin": {
-    "koa2-cli": "./bin/koa2-cli"
+    "koa2-init": "./bin/koa2-init"
   },
   "keywords": [
     "Koa",
