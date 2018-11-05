@@ -17,8 +17,14 @@ program
   .version(package.version)
   .usage('[options] [project_name(dir)]')
   .option('-f, --force', 'force generate in an empty directory')
-  .option('-h, --help', 'show help information')
+  .option('-V, --version', 'show current version')
   .parse(process.argv);
+
+// parse argv
+if (program.fuck) {
+  console.log('fuck');
+  process.exit(0);
+}
 
 // main function
 main();
