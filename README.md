@@ -26,7 +26,7 @@ Inspired by [koa-generator](https://github.com/17koa/koa-generator).
 ## Installation
 
 ```sh
-$ npm install -g koa2-restful-generator
+$ npm install -g koa2-cli
 ```
 
 with 1 command
@@ -51,7 +51,7 @@ To get started in the quickest way, after you installed this package, the system
 ### Create the App
 
 ```bash
-$ koa2-restful-generator test && cd ./test
+$ koa2-cli test && cd ./test
 ```
 
 then the process will **auto execute** `npm install` command in your project directory.
