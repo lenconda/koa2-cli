@@ -1,0 +1,39 @@
+{
+  "name": "koa2-cli",
+  "version": "0.1.0",
+  "description": "A RESTFul API generator for Koa2",
+  "main": "bin/koa2-cli",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "bin": {
+    "koa2-cli": "./bin/koa2-cli"
+  },
+  "keywords": [
+    "Koa",
+    "Koa2",
+    "RESTFul"
+  ],
+  "author": "Lenconda",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/lenconda/koa2-restful-generator.git"
+  },
+  "homepage": "https://github.com/lenconda/koa2-cli#readme",
+  "bugs": {
+    "url": "https://github.com/lenconda/koa2-cli/issues"
+  },
+  "dependencies": {
+    "commander": "^2.19.0",
+    "mkdirp": "^0.5.1",
+    "sorted-object": "^2.0.1"
+  },
+  "devDependencies": {
+    "mocha": "2.2.5",
+    "rimraf": "~2.2.8"
+  },
+  "engines": {
+    "node": ">= 4.0"
+  }
+}

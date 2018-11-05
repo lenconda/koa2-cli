@@ -1,0 +1,114 @@
+#!/usr/bin/env node
+
+var program = require('commander');
+var exec = require('child_process').exec;
+var path = require('path');
+var sortedObject = require('sorted-object');
+
+// import utils
+var utils = require('../utils');
+
+// import package.json
+var package = require('../package');
+
+// define program params and usages
+program
+  .allowUnknownOption() // allow unknown options
+  .version(package.version)
+  .usage('[options] [project_name(dir)]')
+  .option('-f, --force', 'force generate in an empty directory')
+  .option('-h, --help', 'show help information')
+  .parse(process.argv);
+
+// main function
+main();
+
+/**
+ * generate application
+ *
+ * @param {String} appName
+ * @param {String} path
+ */
+function generate(appName, path) {
+  // read files
+  var app = utils.loadFile('app.js');
+  var www = utils.loadFile('www');
+  var index = utils.loadFile('index.js');
+  var users = utils.loadFile('users.js');
+  var gitignore = utils.loadFile('gitignore');
+
+  utils.mkdirP(path, function () {
+    utils.mkdirP(path + '/bin', function () {
+      utils.writeToFile(path + '/bin/www', www, 0755);
+    });
+    utils.mkdirP(path + '/routes', function () {
+      utils.writeToFile(path + '/routes/index.js', index);
+      utils.writeToFile(path + '/routes/users.js', users);
+    });
+    utils.writeToFile(path + '/app.js', app);
+    utils.writeToFile(path + '/.gitignore', gitignore);
+
+    // create package.json
+    var packageJson = {
+      "name": appName,
+      "version": "0.1.0",
+      "scripts": {
+        "dev": "node bin/www",
+        "prod": "pm2 start bin/www",
+        "test": "echo: \"Error: no test specified\" && exit 1"
+      },
+      "dependencies": {
+        "debug": "^2.6.3",
+        "koa": "^2.2.0",
+        "koa-bodyparser": "^3.2.0",
+        "koa-convert": "^1.2.0",
+        "koa-json": "^2.0.2",
+        "koa-logger": "^2.0.1",
+        "@koa/cors": "^2.2.2",
+        "koa-onerror": "^1.2.1",
+        "koa-router": "^7.1.1",
+        "koa-static": "^3.0.0",
+        "koa-views": "^5.2.1"
+      }
+    };
+    // sort dependencies
+    packageJson.dependencies = sortedObject(packageJson.dependencies);
+    // write to /package.json
+    utils.writeToFile(path + '/package.json', JSON.stringify(packageJson, null, 2));
+
+    // install dependencies
+    exec('cd ' + path + ' && npm install', function (error, stdout, stderr) {
+      if (error) throw new Error(error);
+      console.log('    [√] ' + stdout);
+      utils.finished(appName);
+    })
+  });
+}
+
+/**
+ * main function
+ */
+function main() {
+  // define destination path
+  var destPath = program.args[0] || '.';
+
+  // define app name
+  var appName = path.basename(path.resolve(destPath));
+
+  // generate application files
+  utils.isEmptyDir(destPath, function (empty) {
+    if (empty || program.force) {
+      generate(appName, destPath);
+    } else {
+      utils.mkPrompt('The destination directory is not empty, continue? [y/N] ', function (input) {
+        if (input) {
+          process.stdin.destroy();
+          generate(appName, destPath);
+        } else {
+          console.error('Project not generated!');
+          exit(1);
+        }
+      });
+    }
+  });
+}
