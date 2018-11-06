@@ -20,12 +20,6 @@ program
   .option('-V, --version', 'show current version')
   .parse(process.argv);
 
-// parse argv
-if (program.fuck) {
-  console.log('fuck');
-  process.exit(0);
-}
-
 // main function
 main();
 

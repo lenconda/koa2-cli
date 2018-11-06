@@ -83,10 +83,10 @@ function mkPrompt(message, callback) {
 function finished(appName) {
   var prompt = isCmd() ? '>' : '$';
   console.log('\n');
-  console.log('  Successfully generated a new Koa2 RESTFul project - ' + appName + '!\n');
-  console.log('    [+] Run the project in DEV mode: ');
+  console.log('\x1b[32m%s\x1b[0m', '  Successfully generated a new Koa2 RESTFul project - ' + appName + '!\n');
+  console.log('\x1b[36m%s\x1b[0m', '    [+] Run the project in DEV mode: ');
   console.log('      %s npm run dev\n', prompt);
-  console.log('    [+] Run the project in PRODUCTION mode: ');
+  console.log('\x1b[36m%s\x1b[0m', '    [+] Run the project in PRODUCTION mode: ');
   console.log('      %s npm run prod (requires pm2 global installation)\n', prompt);
   console.log('  For more information, please leave for ' + package.homepage);
   console.log('  For bugs or issues, please leave for ' + package.bugs.url);
