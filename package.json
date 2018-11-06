@@ -1,6 +1,6 @@
 {
   "name": "koa2-rest-cli",
-  "version": "0.3.0",
+  "version": "0.4.10",
   "description": "A RESTFul API generator for Koa2",
   "main": "bin/koa2-cli",
   "scripts": {

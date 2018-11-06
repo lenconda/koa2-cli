@@ -16,8 +16,8 @@ program
   .allowUnknownOption() // allow unknown options
   .version(package.version)
   .usage('[options] [project_name(dir)]')
+  .option('-t, --typescript', 'add typescript support')
   .option('-f, --force', 'force generate in an empty directory')
-  .option('-V, --version', 'show current version')
   .parse(process.argv);
 
 // main function
@@ -30,59 +30,79 @@ main();
  * @param {String} path
  */
 function generate(appName, path) {
-  // read files
-  var app = utils.loadFile('app.js');
-  var www = utils.loadFile('www');
-  var index = utils.loadFile('index.js');
-  var users = utils.loadFile('users.js');
-  var gitignore = utils.loadFile('gitignore');
+  var pkgInfo = program.typescript ?
+    require('../templates/template2/package.predefined') :
+    require('../templates/template1/package.predefined');
+  pkgInfo.name = appName;
+  pkgInfo.dependencies = sortedObject(pkgInfo.dependencies);
+  if (program.typescript) {
+    // read files
+    // /
+    let appTs = utils.loadFile('templates/template2/app.ts');
+    var config = utils.loadFile('templates/template2/config.ts');
+    var tsconfig = utils.loadFile('templates/template2/tsconfig.json');
+    var tslint = utils.loadFile('templates/template2/tslint.json');
+    // /app/controllers
+    var index = utils.loadFile('templates/template2/app/controllers/index.ts');
+    var users = utils.loadFile('templates/template2/app/controllers/users.ts');
+    var gitignore = utils.loadFile('templates/gitignore');
 
-  utils.mkdirP(path, function () {
-    utils.mkdirP(path + '/bin', function () {
-      utils.writeToFile(path + '/bin/www', www, 0755);
+    utils.mkdirP(path, function () {
+      utils.mkdirP(path + '/app', function () {
+        utils.mkdirP(path + '/app/middlewares');
+        utils.mkdirP(path + '/app/services');
+        utils.mkdirP(path + '/app/controllers', function () {
+          utils.writeToFile(path + '/app/controllers/index.ts', index);
+          utils.writeToFile(path + '/app/controllers/users.ts', users);
+        });
+      });
+      utils.mkdirP(path + '/interfaces');
+      utils.writeToFile(path + '/app.ts', appTs);
+      utils.writeToFile(path + '/config.ts', config);
+      utils.writeToFile(path + '/tsconfig.json', tsconfig);
+      utils.writeToFile(path + '/tslint.json', tslint);
+      utils.writeToFile(path + '/.gitignore', gitignore);
+
+      // write to /package.json
+      utils.writeToFile(path + '/package.json', JSON.stringify(pkgInfo, null, 2), function () {
+        // install dependencies
+        exec('cd ' + path + ' && npm install', function (error, stdout, stderr) {
+          if (error) throw new Error(error);
+          console.log('    [√] ' + stdout);
+          utils.finished(appName, program.typescript);
+        });
+      });
     });
-    utils.mkdirP(path + '/routes', function () {
-      utils.writeToFile(path + '/routes/index.js', index);
-      utils.writeToFile(path + '/routes/users.js', users);
+  } else {
+    // read files
+    var appJs = utils.loadFile('templates/template1/app.js');
+    var www = utils.loadFile('templates/template1/www');
+    var index = utils.loadFile('templates/template1/index.js');
+    var users = utils.loadFile('templates/template1/users.js');
+    var gitignore = utils.loadFile('templates/gitignore');
+
+    utils.mkdirP(path, function () {
+      utils.mkdirP(path + '/bin', function () {
+        utils.writeToFile(path + '/bin/www', www, 0755);
+      });
+      utils.mkdirP(path + '/routes', function () {
+        utils.writeToFile(path + '/routes/index.js', index);
+        utils.writeToFile(path + '/routes/users.js', users);
+      });
+      utils.writeToFile(path + '/app.js', appJs);
+      utils.writeToFile(path + '/.gitignore', gitignore);
+
+      // write to /package.json
+      utils.writeToFile(path + '/package.json', JSON.stringify(pkgInfo, null, 2), function () {
+        // install dependencies
+        exec('cd ' + path + ' && npm install', function (error, stdout, stderr) {
+          if (error) throw new Error(error);
+          console.log('    [√] ' + stdout);
+          utils.finished(appName, program.typescript);
+        });
+      });
     });
-    utils.writeToFile(path + '/app.js', app);
-    utils.writeToFile(path + '/.gitignore', gitignore);
-
-    // create package.json
-    var packageJson = {
-      "name": appName,
-      "version": "0.1.0",
-      "scripts": {
-        "dev": "node bin/www",
-        "prod": "pm2 start bin/www",
-        "test": "echo: \"Error: no test specified\" && exit 1"
-      },
-      "dependencies": {
-        "debug": "^2.6.3",
-        "koa": "^2.2.0",
-        "koa-bodyparser": "^3.2.0",
-        "koa-convert": "^1.2.0",
-        "koa-json": "^2.0.2",
-        "koa-logger": "^2.0.1",
-        "@koa/cors": "^2.2.2",
-        "koa-onerror": "^1.2.1",
-        "koa-router": "^7.1.1",
-        "koa-static": "^3.0.0",
-        "koa-views": "^5.2.1"
-      }
-    };
-    // sort dependencies
-    packageJson.dependencies = sortedObject(packageJson.dependencies);
-    // write to /package.json
-    utils.writeToFile(path + '/package.json', JSON.stringify(packageJson, null, 2));
-
-    // install dependencies
-    exec('cd ' + path + ' && npm install', function (error, stdout, stderr) {
-      if (error) throw new Error(error);
-      console.log('    [√] ' + stdout);
-      utils.finished(appName);
-    })
-  });
+  }
 }
 
 /**

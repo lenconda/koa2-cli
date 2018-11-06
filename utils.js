@@ -13,7 +13,7 @@ function mkdirP(pathName, callback) {
   mkdirp(pathName, 0755, function (error) {
     if (error) throw new Error(error);
     console.log('    [√] created: ' + pathName);
-    if (callback) callback();
+    callback && callback();
   });
 }
 
@@ -23,8 +23,8 @@ function mkdirP(pathName, callback) {
  * @param {String} fileName
  * @returns {*}
  */
-function loadFile(fileName) {
-  return fs.readFileSync(path.join(__dirname, 'templates', fileName), 'utf-8');
+function loadFile(filePath) {
+  return fs.readFileSync(path.join(__dirname, filePath), 'utf-8');
 }
 
 /**
@@ -34,10 +34,11 @@ function loadFile(fileName) {
  * @param {String} data
  * @param {Number} mode
  */
-function writeToFile(pathName, data, mode) {
+function writeToFile(pathName, data, callback, mode) {
   fs.writeFileSync(pathName, data, {
     mode: mode || 0666
   });
+  callback && callback();
   console.log('    [√] created: ' + pathName);
 }
 
@@ -80,14 +81,28 @@ function mkPrompt(message, callback) {
   });
 }
 
-function finished(appName) {
+function finished(appName, typescript) {
   var prompt = isCmd() ? '>' : '$';
   console.log('\n');
   console.log('\x1b[32m%s\x1b[0m', '  Successfully generated a new Koa2 RESTFul project - ' + appName + '!\n');
-  console.log('\x1b[36m%s\x1b[0m', '    [+] Run the project in DEV mode: ');
-  console.log('      %s npm run dev\n', prompt);
-  console.log('\x1b[36m%s\x1b[0m', '    [+] Run the project in PRODUCTION mode: ');
-  console.log('      %s npm run prod (requires pm2 global installation)\n', prompt);
+  if (typescript) {
+    console.log('\x1b[36m%s\x1b[0m', '    [+] Run the project in DEV mode: ');
+    console.log('      %s npm start\n', prompt);
+    console.log('\x1b[36m%s\x1b[0m', '    [+] Run the project in PRODUCTION mode: ');
+    console.log('      %s npm run prod (requires pm2 global installation)\n', prompt);
+    console.log('\x1b[36m%s\x1b[0m', '    [+] Build the project: ');
+    console.log('      %s npm run build\n', prompt);
+    console.log('\x1b[36m%s\x1b[0m', '    [+] Clean the project: ');
+    console.log('      %s npm run clean\n', prompt);
+    console.log('\x1b[36m%s\x1b[0m', '    [+] Lint the project: ');
+    console.log('      %s npm run lint\n', prompt);
+    console.log('  The project is written in TypeScript.\n  To read TypeScript documentation, please leave for https://www.typescriptlang.org/docs/home.html\n');
+  } else {
+    console.log('\x1b[36m%s\x1b[0m', '    [+] Run the project in DEV mode: ');
+    console.log('      %s npm run dev\n', prompt);
+    console.log('\x1b[36m%s\x1b[0m', '    [+] Run the project in PRODUCTION mode: ');
+    console.log('      %s npm run prod (requires pm2 global installation)\n', prompt);
+  }
   console.log('  For more information, please leave for ' + package.homepage);
   console.log('  For bugs or issues, please leave for ' + package.bugs.url);
 }
