@@ -76,8 +76,8 @@ function mkPrompt(message, callback) {
     output: process.stdout
   });
   newPrompt.question(message, function (answer) {
-    callback(/^y|yes|ok|true$/i.test(answer));
     newPrompt.close();
+    callback(/^y|yes|ok|true$/i.test(answer));
   });
 }
 

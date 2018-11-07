@@ -48,6 +48,12 @@ function generate(appName, path) {
     var gitignore = utils.loadFile('templates/gitignore');
 
     utils.mkdirP(path, function () {
+      utils.writeToFile(path + '/app.ts', appTs);
+      utils.writeToFile(path + '/config.ts', config);
+      utils.writeToFile(path + '/tsconfig.json', tsconfig);
+      utils.writeToFile(path + '/tslint.json', tslint);
+      utils.writeToFile(path + '/.gitignore', gitignore);
+      utils.mkdirP(path + '/interfaces');
       utils.mkdirP(path + '/app', function () {
         utils.mkdirP(path + '/app/middlewares');
         utils.mkdirP(path + '/app/services');
@@ -56,15 +62,9 @@ function generate(appName, path) {
           utils.writeToFile(path + '/app/controllers/users.ts', users);
         });
       });
-      utils.mkdirP(path + '/interfaces');
-      utils.writeToFile(path + '/app.ts', appTs);
-      utils.writeToFile(path + '/config.ts', config);
-      utils.writeToFile(path + '/tsconfig.json', tsconfig);
-      utils.writeToFile(path + '/tslint.json', tslint);
-      utils.writeToFile(path + '/.gitignore', gitignore);
 
       // write to /package.json
-      utils.writeToFile(path + '/package.json', JSON.stringify(pkgInfo, null, 2), function () {
+      utils.writeToFile(path + '/package.json', JSON.stringify(pkgInfo, null, 2), function (status) {
         // install dependencies
         exec('cd ' + path + ' && npm install', function (error, stdout, stderr) {
           if (error) throw new Error(error);
@@ -83,7 +83,7 @@ function generate(appName, path) {
 
     utils.mkdirP(path, function () {
       utils.mkdirP(path + '/bin', function () {
-        utils.writeToFile(path + '/bin/www', www, 0755);
+        utils.writeToFile(path + '/bin/www', www, null, 0755);
       });
       utils.mkdirP(path + '/routes', function () {
         utils.writeToFile(path + '/routes/index.js', index);
@@ -93,7 +93,7 @@ function generate(appName, path) {
       utils.writeToFile(path + '/.gitignore', gitignore);
 
       // write to /package.json
-      utils.writeToFile(path + '/package.json', JSON.stringify(pkgInfo, null, 2), function () {
+      utils.writeToFile(path + '/package.json', JSON.stringify(pkgInfo, null, 2), function (status) {
         // install dependencies
         exec('cd ' + path + ' && npm install', function (error, stdout, stderr) {
           if (error) throw new Error(error);
