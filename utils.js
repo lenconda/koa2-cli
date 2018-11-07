@@ -9,11 +9,13 @@ var package = require('./package');
  * @param {String} pathName
  * @param {Function} callback
  */
-function mkdirP(pathName, callback) {
-  mkdirp(pathName, 0755, function (error) {
-    if (error) throw new Error(error);
-    console.log('    [√] created: ' + pathName);
-    callback && callback();
+function mkdirP(pathName) {
+  return new Promise(function (resolve, reject) {
+    mkdirp(pathName, 0755, function (error) {
+      if (error) reject(error);
+      console.log('    [√] created: ' + pathName);
+      resolve();
+    });
   });
 }
 
@@ -34,12 +36,14 @@ function loadFile(filePath) {
  * @param {String} data
  * @param {Number} mode
  */
-function writeToFile(pathName, data, callback, mode) {
-  fs.writeFileSync(pathName, data, {
-    mode: mode || 0666
+function writeToFile(pathName, data, mode) {
+  return new Promise(function (resolve, reject) {
+    fs.writeFileSync(pathName, data, {
+      mode: mode || 0666
+    });
+    console.log('    [√] created: ' + pathName);
+    resolve();
   });
-  callback && callback();
-  console.log('    [√] created: ' + pathName);
 }
 
 /**
