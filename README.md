@@ -1,7 +1,7 @@
 # koa2-rest-cli
 
 ![Build Status](https://travis-ci.org/lenconda/koa2-rest-cli.svg?branch=master)
-[![NPM Version][npm-image]][npm-url]
+[![npm version](https://badge.fury.io/js/koa2-rest-cli.svg)](https://badge.fury.io/js/koa2-rest-cli)
 
 [Koa](https://www.npmjs.com/package/koa) application generator.
 
