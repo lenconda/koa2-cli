@@ -35,6 +35,7 @@ async function generate(appName, path) {
     require('../templates/template1/package.predefined');
   pkgInfo.name = appName;
   pkgInfo.dependencies = sortedObject(pkgInfo.dependencies);
+  await utils.mkdirP(path);
   if (program.typescript) {
     // read files
     // /
@@ -47,8 +48,6 @@ async function generate(appName, path) {
     var users = utils.loadFile('templates/template2/app/controllers/users.ts');
     var gitignore = utils.loadFile('templates/gitignore');
 
-    // mkdir project root dir
-    await utils.mkdirP(path);
     // write files to root dir
     await utils.writeToFile(path + '/app.ts', appTs);
     await utils.writeToFile(path + '/config.ts', config);
@@ -67,12 +66,6 @@ async function generate(appName, path) {
     await utils.writeToFile(path + '/app/controllers/users.ts', users);
     // write package.json to root dir
     await utils.writeToFile(path + '/package.json', JSON.stringify(pkgInfo, null, 2));
-    console.log('\n\x1b[32m%s\x1b[0m', '    [+] installing dependencies...');
-    exec('cd ' + path + ' && npm install', function (error, stdout, stderr) {
-      if (error) throw new Error(error);
-      console.log('    [√] ' + stdout);
-      utils.finished(appName, program.typescript);
-    });
   } else {
     // read files
     var appJs = utils.loadFile('templates/template1/app.js');
@@ -81,8 +74,6 @@ async function generate(appName, path) {
     var users = utils.loadFile('templates/template1/users.js');
     var gitignore = utils.loadFile('templates/gitignore');
 
-    // mkdir project root dir
-    await utils.mkdirP(path);
     await utils.writeToFile(path + '/app.js', appJs);
     await utils.writeToFile(path + '/.gitignore', gitignore);
     await utils.mkdirP(path + '/bin');
@@ -94,13 +85,13 @@ async function generate(appName, path) {
     await utils.writeToFile(path + '/routes/users.js', users);
     // write package.json to root dir
     await utils.writeToFile(path + '/package.json', JSON.stringify(pkgInfo, null, 2));
-    console.log('\n\x1b[32m%s\x1b[0m', '    [+] installing dependencies...');
-    exec('cd ' + path + ' && npm install', function (error, stdout, stderr) {
-      if (error) throw new Error(error);
-      console.log('    [√] ' + stdout);
-      utils.finished(appName, program.typescript);
-    });
   }
+  console.log('\n\x1b[32m%s\x1b[0m', '    [+] installing dependencies...');
+  exec('cd ' + path + ' && npm install', function (error, stdout, stderr) {
+    if (error) throw new Error(error);
+    console.log('    [√] ' + stdout);
+    utils.finished(appName, program.typescript);
+  });
 }
 
 /**
