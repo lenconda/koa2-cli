@@ -3,7 +3,7 @@
 ![Build Status](https://travis-ci.org/lenconda/koa2-rest-cli.svg?branch=master)
 [![npm version](https://badge.fury.io/js/koa2-rest-cli.svg)](https://badge.fury.io/js/koa2-rest-cli)
 ![ndoe version](https://img.shields.io/node/v/koa2-rest-cli.svg)
-1[monthly downloads](https://img.shields.io/npm/dm/koa2-rest-cli.svg)
+![monthly downloads](https://img.shields.io/npm/dm/koa2-rest-cli.svg)
 [![license](https://img.shields.io/github/license/mashape/apistatus.svg)](https://github.com/lenconda/koa2-rest-cli/blob/master/LICENSE)
 [![contributions welcome](https://img.shields.io/badge/contributions-welcome-brightgreen.svg?style=flat)](https://github.com/dwyl/esta/issues)
 
