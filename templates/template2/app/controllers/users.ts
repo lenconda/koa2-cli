@@ -1,4 +1,4 @@
-import {BodyParam, JsonController, Get, Post, QueryParam} from 'routing-controllers'
+import { BodyParam, JsonController, Get, Post, QueryParam } from 'routing-controllers'
 
 @JsonController('/users')
 export default class UsersController {

@@ -47,7 +47,7 @@ async function generate(appName, path) {
     var index = utils.loadFile('templates/template2/app/controllers/index.ts');
     var users = utils.loadFile('templates/template2/app/controllers/users.ts');
     var gitignore = utils.loadFile('templates/gitignore');
-
+    var gitkeep = utils.loadFile('templates/gitkeep');
     // write files to root dir
     await utils.writeToFile(path + '/app.ts', appTs);
     await utils.writeToFile(path + '/config.ts', config);
@@ -56,10 +56,13 @@ async function generate(appName, path) {
     await utils.writeToFile(path + '/.gitignore', gitignore);
     // mkdir ./interfaces
     await utils.mkdirP(path + '/interfaces');
+    await utils.writeToFile(path + '/app/interfaces/.gitkeep', gitkeep);
     // mkdir ./app
     await utils.mkdirP(path + '/app');
     await utils.mkdirP(path + '/app/middlewares');
+    await utils.writeToFile(path + '/app/middlewares/.gitkeep', gitkeep);
     await utils.mkdirP(path + '/app/services');
+    await utils.writeToFile(path + '/app/services/.gitkeep', gitkeep);
     await utils.mkdirP(path + '/app/controllers');
     // write files to ./app/controllers
     await utils.writeToFile(path + '/app/controllers/index.ts', index);
