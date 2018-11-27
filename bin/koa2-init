@@ -37,36 +37,48 @@ async function generate(appName, path) {
   pkgInfo.dependencies = sortedObject(pkgInfo.dependencies);
   await utils.mkdirP(path);
   if (program.typescript) {
+
     // read files
     // /
-    let appTs = utils.loadFile('templates/template2/app.ts');
+    let appTs = utils.loadFile('templates/template2/app/app.ts');
     var config = utils.loadFile('templates/template2/config.ts');
     var tsconfig = utils.loadFile('templates/template2/tsconfig.json');
     var tslint = utils.loadFile('templates/template2/tslint.json');
+
     // /app/controllers
-    var index = utils.loadFile('templates/template2/app/controllers/index.ts');
-    var users = utils.loadFile('templates/template2/app/controllers/users.ts');
+    var hello = utils.loadFile('templates/template2/app/controllers/hello.ts');
     var gitignore = utils.loadFile('templates/gitignore');
     var gitkeep = utils.loadFile('templates/gitkeep');
+
+    // /app/middlewares
+    var middleware = utils.loadFile('templates/template2/app/middlewares/index.ts');
+
+    // /app/services
+    var service = utils.loadFile('templates/template2/app/services/hello.ts');
+
     // write files to root dir
-    await utils.writeToFile(path + '/app.ts', appTs);
     await utils.writeToFile(path + '/config.ts', config);
     await utils.writeToFile(path + '/tsconfig.json', tsconfig);
     await utils.writeToFile(path + '/tslint.json', tslint);
     await utils.writeToFile(path + '/.gitignore', gitignore);
-    // mkdir ./interfaces
-    await utils.mkdirP(path + '/interfaces');
-    await utils.writeToFile(path + '/app/interfaces/.gitkeep', gitkeep);
+
     // mkdir ./app
     await utils.mkdirP(path + '/app');
+    // mkdir ./interfaces, ./typings
+    await utils.mkdirP(path + '/app/interfaces');
+    await utils.writeToFile(path + '/app/interfaces/.gitkeep', gitkeep);
+    await utils.mkdirP(path + '/app/typings');
+    await utils.writeToFile(path + '/app/typings/.gitkeep', gitkeep);
+
+    await utils.writeToFile(path + '/app/app.ts', appTs);
     await utils.mkdirP(path + '/app/middlewares');
-    await utils.writeToFile(path + '/app/middlewares/.gitkeep', gitkeep);
+    await utils.writeToFile(path + '/app/middlewares/index.ts', middleware);
     await utils.mkdirP(path + '/app/services');
-    await utils.writeToFile(path + '/app/services/.gitkeep', gitkeep);
+    await utils.writeToFile(path + '/app/services/hello.ts', service);
     await utils.mkdirP(path + '/app/controllers');
     // write files to ./app/controllers
-    await utils.writeToFile(path + '/app/controllers/index.ts', index);
-    await utils.writeToFile(path + '/app/controllers/users.ts', users);
+    await utils.writeToFile(path + '/app/controllers/hello.ts', hello);
+
     // write package.json to root dir
     await utils.writeToFile(path + '/package.json', JSON.stringify(pkgInfo, null, 2));
   } else {
@@ -80,12 +92,15 @@ async function generate(appName, path) {
     await utils.writeToFile(path + '/app.js', appJs);
     await utils.writeToFile(path + '/.gitignore', gitignore);
     await utils.mkdirP(path + '/bin');
+
     // write www to /bin
     await utils.writeToFile(path + '/bin/www', www, 0755);
     await utils.mkdirP(path + '/routes');
+
     // write files to /routes
     await utils.writeToFile(path + '/routes/index.js', index);
     await utils.writeToFile(path + '/routes/users.js', users);
+
     // write package.json to root dir
     await utils.writeToFile(path + '/package.json', JSON.stringify(pkgInfo, null, 2));
   }

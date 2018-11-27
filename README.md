@@ -97,7 +97,7 @@ $ npm run prod
 $ npm start
 
 # start a production server
-$ npm run prod
+$ npm run serve
 # (production server requires pm2)
 
 # build the project

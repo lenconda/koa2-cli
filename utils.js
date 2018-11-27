@@ -93,7 +93,7 @@ function finished(appName, typescript) {
     console.log('\x1b[36m%s\x1b[0m', '    [+] Run the project in DEV mode: ');
     console.log('      %s npm start\n', prompt);
     console.log('\x1b[36m%s\x1b[0m', '    [+] Run the project in PRODUCTION mode: ');
-    console.log('      %s npm run prod (requires pm2 global installation)\n', prompt);
+    console.log('      %s npm run serve (requires pm2 global installation)\n', prompt);
     console.log('\x1b[36m%s\x1b[0m', '    [+] Build the project: ');
     console.log('      %s npm run build\n', prompt);
     console.log('\x1b[36m%s\x1b[0m', '    [+] Clean the project: ');
